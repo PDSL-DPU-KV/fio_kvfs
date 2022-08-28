@@ -91,6 +91,12 @@ ifdef CONFIG_LIBNFS
   SOURCE += engines/nfs.c
 endif
 
+ifdef CONFIG_KVFS
+  CFLAGS += $(LIBKVFS_CFLAGS)
+  LIBS += $(LIBKVFS_LIBS)
+  SOURCE += engines/kvfs.c
+endif
+
 ifdef CONFIG_64BIT
   CPPFLAGS += -DBITS_PER_LONG=64
 else ifdef CONFIG_32BIT

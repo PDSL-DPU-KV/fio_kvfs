@@ -181,6 +181,7 @@ dfs=""
 seed_buckets=""
 dynamic_engines="no"
 prefix=/usr/local
+libkvfs=""
 
 # parse options
 for opt do
@@ -262,6 +263,8 @@ for opt do
   ;;
   --seed-buckets=*) seed_buckets="$optarg"
   ;;
+  --enable-kvfs) libkvfs="yes"
+  ;;
   --help)
     show_help="yes"
     ;;
@@ -310,6 +313,7 @@ if test "$show_help" = "yes" ; then
   echo "--disable-dfs           Disable DAOS File System support even if found"
   echo "--enable-asan           Enable address sanitizer"
   echo "--seed-buckets=         Number of seed buckets for the refill-buffer"
+  echo "--enable-kvfs           KVFS fio Plugin"
   exit $exit_val
 fi
 
@@ -2339,6 +2343,14 @@ fi
 print_config "NFS engine" "$libnfs"
 
 ##########################################
+# Check if we use kvfs
+if test "$libkvfs" != "no"; then
+  libkvfs_cflags="-I./kvfs/include"
+  libkvfs_libs="-L./kvfs/build/src -lkvfs"
+fi
+print_config "KVFS engine" "$libkvfs"
+
+##########################################
 # Check if we have lex/yacc available
 yacc="no"
 yacc_is_bison="no"
@@ -3243,6 +3255,11 @@ if test "$libnfs" = "yes" ; then
   output_sym "CONFIG_LIBNFS"
   echo "LIBNFS_CFLAGS=$libnfs_cflags" >> $config_host_mak
   echo "LIBNFS_LIBS=$libnfs_libs" >> $config_host_mak
+fi
+if test "$libkvfs" = "yes" ; then
+  output_sym "CONFIG_KVFS"
+  echo "LIBKVFS_CFLAGS=$libkvfs_cflags" >> $config_host_mak
+  echo "LIBKVFS_LIBS=$libkvfs_libs" >> $config_host_mak
 fi
 if test "$xnvme" = "yes" ; then
   output_sym "CONFIG_LIBXNVME"

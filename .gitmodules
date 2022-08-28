@@ -1,0 +1,3 @@
+[submodule "kvfs"]
+	path = kvfs
+	url = http://github.com/PDSL-DPU-KV/kvfs
