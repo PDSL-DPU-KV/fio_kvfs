@@ -34,4 +34,5 @@ doc/output
 tsc-rate
 
 .clangd
+.cache
 compile_commands.json

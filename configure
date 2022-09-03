@@ -2346,7 +2346,7 @@ print_config "NFS engine" "$libnfs"
 # Check if we use kvfs
 if test "$libkvfs" != "no"; then
   libkvfs_cflags="-I./kvfs/include"
-  libkvfs_libs="-L./kvfs/build/src -lkvfs"
+  libkvfs_libs="-L./kvfs/build/src -lkvfs -Wl,-rpath,./kvfs/build/src"
 fi
 print_config "KVFS engine" "$libkvfs"
 
